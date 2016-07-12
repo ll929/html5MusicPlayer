@@ -1,0 +1,267 @@
+body{
+  background: url("../images/bg.jpg") no-repeat center;
+  background-size: 100% 100%;
+  transition: background 9s;
+  //border: 2px solid #7bffff;
+  height: 640px;
+  width: 400px;
+  margin: 0 auto;
+}
+*{
+  margin: 0;
+  padding: 0;
+}
+#player *{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  &::selection{
+    background: none;
+  }
+}
+#player{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  font: 14px/1.5 "microsoft yahei", Helvetica, Arial, "宋体", sans-serif;
+  .player-content{
+    position: relative;
+    width: 100%;
+    height: 90%;
+    //border: 2px solid #88b058;
+    .player-left,.player-center,.player-right{
+      left: -100%;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+    .player-left{
+      top: 0;
+      .player-list-box{
+        position: relative;
+        height: 70%;
+        top: 3%;
+        overflow-y: hidden;
+        .player-list{
+          position: relative;
+          top: 0;
+          line-height: 1.8;
+          color: rgba(255,255,255,.5);
+          list-style: none;
+          padding: 0 0 0 10%;
+          transition: all 1s;
+          li{
+            padding-left: 20px;
+            cursor: pointer;
+            &:hover{
+              color: #fff;
+            }
+          }
+          .current{
+            color: #fff;
+            background: url("../images/music.png") left center no-repeat;
+          }
+        }
+      }
+    }
+    .player-center{
+      top: 0;
+      .art-pic-box{
+        position: relative;
+        width: 50%;
+        margin: 40% auto;
+        border-radius: 3%;
+        overflow: hidden;
+        .art-pic{
+          display: block;
+          width: 100%;
+          height: auto;
+        }
+        .art-pic-inner{
+        }
+        .cdtheme{
+          position: absolute;
+          top: 50%;
+          margin-top: -30px;
+          left: 50%;
+          margin-left: -30px;
+          width: 60px;
+          height: 60px;
+          background-color: rgba(0,0,0,.8);
+          border-radius: 100%;
+          box-shadow: 0 0 0 3px #000;
+        }
+      }
+      .cdtheme{
+        border-radius: 100%;
+        animation: cd 6s infinite linear;
+      }
+      @keyframes cd {
+        0%{
+          transform: rotate(0deg);
+        }
+        100%{
+          transform: rotate(360deg);
+        }
+      }
+      .player-art-title{
+        position: absolute;
+        top: 3%;
+        left: 3%;
+        .art-name{
+          padding-left: 15px;
+          color: #fff;
+          font-size: 25px;
+          letter-spacing: 15px;
+        }
+        .art-singer,.art-album,.art-sa{
+          color: #aaa;
+          font-size: 20px;
+          display: inline-block;
+        }
+      }
+    }
+    .player-right{
+      .player-lrc-box{
+        position: relative;
+        height: 70%;
+        top: 5%;
+        overflow-y: hidden;
+        .player-lrc{
+          position: relative;
+          top: 0;
+          text-align: center;
+          list-style: none;
+          color: #f5f5f5;
+          transition: all 1s;
+          line-height: 2;
+          cursor: pointer;
+        }
+      }
+      .current{
+        color: #7bffff;
+      }
+    }
+  }
+  .player-panel{
+    width: 100%;
+    height: 10%;
+    //border: 2px solid #dec400;
+    .player-panel-left{
+      //border: 2px solid #202020;
+      position: absolute;
+      left: 0;
+      bottom: 1%;
+      height: 9%;
+      width: 100%;
+      /*  border: 3px solid #ff00ff;*/
+      .player-btn{
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        list-style: none;
+        .player-btn-pre,.player-btn-pp,.player-btn-next{
+          position: absolute;
+          top: 0;
+          display: inline-block;
+          height: 100%;
+          width: 14%;
+          opacity: .5;
+          cursor: pointer;
+          transition: all .7s;
+          &:hover{
+            opacity: 1 !important;
+          }
+        }
+        .player-btn-pre{
+          left: 3%;
+          background: url("../images/pre.png") no-repeat center;
+          background-size: 65%;
+        }
+        .player-btn-pp{
+          left: 43%;
+          background: url("../images/play.png") no-repeat center;
+          background-size: 80%;
+          opacity: 1;
+        }
+        .player-btn-next{
+          right: 3%;
+          background: url("../images/next.png") no-repeat center;
+          background-size: 65%;
+        }
+      }
+    }
+    .player-panel-center{
+      position: absolute;
+      bottom: 12%;
+      height: 10%;
+      width: 100%;
+      color: rgba(255,255,255,.5);
+      .art-info{
+        span{
+          bottom: 11%;
+          position: absolute;
+          display: none;
+        }
+        .time-current{
+          display: block;
+          left: 3%;
+        }
+        .time-total{
+          display: block;
+          right: 3%;
+        }
+      }
+      .player-progress{
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 10%;
+        background: rgba(255,255,255,.2);
+        overflow: hidden;
+        cursor: pointer;
+        .player-progress-inner{
+          height: 100%;
+          width: 0;
+          background: rgba(123,255,255,.7);
+          opacity: .7;
+        }
+      }
+    }
+    .player-panel--right{
+      .player-mode{
+        //border: 2px solid #7ea352;
+        position: absolute;
+        bottom: 20%;
+        left: 25%;
+        width: 50%;
+        height: 7%;
+        .player-mode-shuffle{
+          background: url("../images/shuffle.png") center no-repeat;
+          left: 0;
+        }
+        .player-mode-repeat{
+          background: url("../images/repeat.png") center no-repeat;
+          left: 40%;
+        }
+        .player-mode-repeatall{
+          background: url("../images/repeatall.png") center no-repeat;
+          right: 0;
+        }
+        .player-mode-shuffle,.player-mode-repeat,.player-mode-repeatall{
+          position: absolute;
+          display: inline-block;
+          width: 20%;
+          height: 100%;
+          background-size: 100%;
+          opacity: .5;
+          cursor: pointer;
+          transition: all .7s;
+        }
+        .current{
+          opacity: 1;
+        }
+      }
+    }
+  }
+}

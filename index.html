@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>html5player</title>
+    <!--<link rel="stylesheet" type="text/css" href="css/main.css">-->
+    <!--<link rel="stylesheet" type="text/css" href="css/mobile.css">-->
+</head>
+<body>
+<div id="player">
+    <div class="player-content">
+        <div class="player-left">
+            <div class="player-list-box">
+                <ul class="player-list"><li>正在加载</li></ul>
+            </div>
+        </div>
+        <div class="player-center">
+            <div class="art-pic-box">
+                <img class="art-pic">
+                <div class="art-pic-inner"></div>
+            </div>
+            <div class="player-art-title">
+                <p class="art-name"></p>
+                <p class="art-sa">歌手：<span class="art-singer"></span></p>
+                <p class="art-sa">专辑：<span class="art-album"></span></p>
+            </div>
+        </div>
+        <div class="player-right">
+            <div class="player-lrc-box">
+                <!--<div class="player-lrc-scrollbar"></div>-->
+                <ul class="player-lrc">
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="player-panel">
+        <div class="player-panel-left">
+            <ul class="player-btn">
+                <li class="player-btn-pre"></li>
+                <li class="player-btn-pp"></li>
+                <li class="player-btn-next"></li>
+            </ul>
+        </div>
+        <div class="player-panel-center">
+            <div class="art-info">
+                <span class="art-name"></span>
+                <span>-</span>
+                <span class="art-singer"></span>
+                <div class="art-time">
+                    <span class="time-current">00:00</span>
+                    <span>/</span>
+                    <span class="time-total"></span>
+                </div>
+            </div>
+            <div class="player-progress">
+                <div class="player-progress-inner"></div>
+            </div>
+        </div>
+       <div class="player-panel--right">
+           <div class="player-mode">
+               <span class="player-mode-shuffle" data="shuffle"></span>
+               <span class="player-mode-repeat" data="repeat"></span>
+               <span class="player-mode-repeatall" data="repeatall"></span>
+           </div>
+           <div class="player-volume">
+               <span class="player-volume-bg"></span>
+               <div class="player-volume-total">
+                   <div class="player-volume-current"></div>
+               </div>
+           </div>
+       </div>
+        <audio class="audio">
+            <source class="audio-source-1">
+            <source class="audio-source-2">
+        </audio>
+    </div>
+    <div class="player-box-bg" style="display: none">
+        <img id="player-box-bg-img">
+        <canvas id="player-box-bg-canvas"></canvas>
+    </div>
+</div>
+<script src="js/jquery-1.7.2.min.js"></script>
+<script src="js/jquery.touchSwipe.min.js"></script>
+<script src="js/StackBlur.js"></script>
+<!--<script src="js/mobile.js"></script>-->
+<!--<script src="js/player.js"></script>-->
+<script src="js/main.js"></script>
+</body>
+</html>
