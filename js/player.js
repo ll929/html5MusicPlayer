@@ -5,15 +5,15 @@ $(function () {
     var playerConfig = {
         "autoplay" : false,//自动播放
         "defaultId" : 0, //默认播放id
-        "mode" : "order", //播放模式["order","",repeat","repeatall"]
+        "mode" : "order", //播放模式["shuffle","order","",repeat","repeatall"]
         "volume" : 75, //默认音量
         "mediaType" : ["aac","mp3"], //播放音频格式顺序
         "box" : $("body"), //播放器背景元素
         "theme" : {
-            "cd" : false,
-            "progressColor" : false,
-            "volumeColor" :　false,
-            "defaultBgImg" :false,  //url
+            "cd" : false,  //图片cd转动效果
+            "progressColor" : "", //进度条颜色，默认rgba(123, 255, 255, 0.7)
+            "volumeColor" :　"",  //音量颜色，默认rgba(123, 255, 255, 0.7)
+            "defaultBgImg" :"",  //url
             "bgBlur" : 10 //背景高斯模糊程度
         }
     };
@@ -23,8 +23,7 @@ $(function () {
         p = $("#player"),//播放器元素
         currentSongId = playerConfig.defaultId, //当前播放id
         audio = p.find(".audio")[0],
-        lrc,
-        zoom;
+        lrc;
 
     /**
      * 秒转换分
@@ -47,6 +46,7 @@ $(function () {
         var minArr = min.split(":");
         return minArr[0]*60 + minArr[1]*1;
     }
+
     function Monitor() {
         var obj = {};
         /**
@@ -68,12 +68,17 @@ $(function () {
         this.trigger = function (channel,data) {
             if(obj[channel] == null) obj[channel] = [];
             for (var i = 0;i < obj[channel].length;i++) {
+                //返回false则返回，不执行后续函数
                 if (obj[channel][i].call(this,data) === false) {
                     return false;
                 }
             }
         }
     }
+
+    /**
+     * 设置播放器背景
+     */
     function setBoxBg() {
         var url,
             img = p.find("#player-box-bg-img"),
@@ -84,6 +89,7 @@ $(function () {
         }else {
             url = "media/"+playList[currentSongId].key+".jpg";
         }
+        //如果图片需要跨域加载，则先用后台转换成base64格式，在放到本地高斯模糊
         if(reg.test(url)){
             $.post("http://115.159.26.61/imgtobase64/getbase64.php",{
                 "url":url
@@ -96,12 +102,10 @@ $(function () {
             toBlur(url)
         }
         function toBlur(src) {
-            $(document).ready(function () {
-                img[0].src = src;
-                img.load(function () {
-                    stackBlurImage( "player-box-bg-img", "player-box-bg-canvas",playerConfig.theme.bgBlur, false );
-                    setNewBg()
-                })
+            img[0].src = src;
+            img.load(function () {
+                stackBlurImage( "player-box-bg-img", "player-box-bg-canvas",playerConfig.theme.bgBlur, false );
+                setNewBg()
             })
         }
         function setNewBg() {
@@ -115,6 +119,10 @@ $(function () {
                 "background-size": "cover"})
         }
     }
+
+    /**
+     * 设置主题样式
+     */
     function setTheme() {
         var theme = playerConfig.theme;
         if(theme.cd){
@@ -134,6 +142,10 @@ $(function () {
     var lrcMonitor = new Monitor(),
         lrcBarMonitor = new Monitor(),
         playListbarMonitor = new Monitor();
+    /**
+     *
+     * @param mode
+     */
     function initModeSongId(mode) {
         for (var i = 0;i<playList.length;i++){
             modeIdList[i] = i;
@@ -144,6 +156,13 @@ $(function () {
                 break;
         }
     }
+
+    /**
+     * 获取播放id
+     * @param id
+     * @param btn
+     * @returns {*}
+     */
     function getModeSongId(id,btn) {
         id < 0 ?id = modeIdList.length-1:id = id%modeIdList.length;
         switch (playerConfig.mode){
@@ -163,9 +182,13 @@ $(function () {
             break;
         }
     }
+
+    /**
+     * 异步获取播放列表
+     */
     function getPlayList() {
         $.ajax({
-            url : "js/playlist.json",
+            url : "js/playlist.json?v=2",
             type : "get",
             dataType : "json",
             success : function (data) {
@@ -179,7 +202,7 @@ $(function () {
                             mp3 : data[key].mp3,
                             aac : data[key].aac,
                             lrc : data[key].lrc,
-                            artpic : data[key].artpic
+                            artpic : data[key].artpic || "images/artpic.jpg"
                         }
                     }
                 }
@@ -190,6 +213,12 @@ $(function () {
             }
         })
     }
+
+    /**
+     * 格式化lrc歌词
+     * @param lrc lrc内容
+     * @returns {Array}  歌词的每一句以数组的形式返回
+     */
     function formatLrc(lrc) {
         var lrcArr = lrc.split("\n"), lrclist = [], singleLrc, timeId,text;
         for(var i=0;i<lrcArr.length;i++){
@@ -202,6 +231,10 @@ $(function () {
         }
         return lrclist;
     }
+
+    /**
+     * 异步请求lrc歌词文件
+     */
     function loadLrc() {
         var url;
         if(playList[currentSongId].lrc){
@@ -223,6 +256,11 @@ $(function () {
         });
         lrcTimeId = 0;lrcTemp = undefined; lrcTimeIdTemp = undefined;
     }
+
+    /**
+     * 显示歌词
+     * @param lrc  经过formatLrc函数处理后的lrc
+     */
     function showLrc(lrc) {
         var lrcBox = p.find(".player-lrc");
         lrcBox.css("top",0);
@@ -238,11 +276,19 @@ $(function () {
         var h = lrcBox.height();
         lrcBarMonitor.trigger("lrcBar",h)
     }
+
+    /**
+     * 加载歌曲其他信息
+     */
     function loadSongInf() {
         p.find(".art-name").html(playList[currentSongId].name);
         p.find(".art-singer").html(playList[currentSongId].artist);
         p.find(".art-album").html(playList[currentSongId].album);
     }
+
+    /**
+     * 加载歌曲图片
+     */
     function loadArtPic() {
         var url;
         if(playList[currentSongId].artpic){
@@ -252,6 +298,10 @@ $(function () {
         }
         p.find(".art-pic")[0].src = url;
     }
+
+    /**
+     * 加载歌曲资源
+     */
     function loadAudio() {
       var ext1 = playerConfig.mediaType[0],
           ext2 = playerConfig.mediaType[1],
@@ -272,6 +322,10 @@ $(function () {
         }
         audio.load();
     }
+
+    /**
+     * 监听播放列表点击事件
+     */
     function playListListener() {
         p.find(".player-list").click(function (e) {
             var currentPlay = p.find(".playlist-"+currentSongId);
@@ -279,11 +333,15 @@ $(function () {
                 if(currentPlay){
                     currentPlay.removeClass("current");
                 }
-                currentSongId = $(e.target).attr("listid");
+                currentSongId = $(e.target).data("listid");
                 player.loadPlayMedia();
             }
         })
     }
+
+    /**
+     * 监听audio的各种事件
+     */
     function audioListListener() {
         var progressTotal = p.find(".player-progress").width(),
             currentProgress = p.find(".player-progress-inner"),
@@ -316,19 +374,27 @@ $(function () {
             }
         });
     }
+
+    /**
+     * 监听进度条点击事件
+     */
     function progressListener() {
         var progressTotal = p.find(".player-progress").width();
         p.find(".player-progress").on("click",function (e) {
-            audio.currentTime = e.offsetX/zoom/progressTotal*audio.duration;
+            audio.currentTime = e.offsetX/progressTotal*audio.duration;
         })
     }
+
+    /**
+     * 监听音量条点击事件
+     */
     function volumeListener() {
         var currentVolume = p.find(".player-volume-current");
         currentVolume.width(playerConfig.volume/100*p.find(".player-volume-total").width());
         audio.volume = playerConfig.volume/100;
         p.find(".player-volume-total").click(function (e) {
-            audio.volume = e.offsetX/zoom/$(this).width();
-            currentVolume.width(e.offsetX/zoom);
+            audio.volume = e.offsetX/$(this).width();
+            currentVolume.width(e.offsetX);
             audio.muted = false;
             p.find(".player-volume-bg").removeClass("mute")
         });
@@ -340,6 +406,10 @@ $(function () {
             }
         })
     }
+
+    /**
+     * 监听播放按钮点击事件
+     */
     function playBtnListener() {
         var pre = p.find(".player-btn-pre"),
             pp = p.find(".player-btn-pp"),
@@ -363,6 +433,10 @@ $(function () {
             player.loadPlayMedia();
         })
     }
+
+    /**
+     * 监听模式选择点击事件
+     */
     function playModeListener() {
         function setMode(mode) {
             p.find(".player-mode-"+playerConfig.mode).removeClass("current");
@@ -378,6 +452,10 @@ $(function () {
             initModeSongId(playerConfig.mode)
         })
     }
+
+    /**
+     * 绑定自定义事件
+     */
     function lrcBarListener() {
         var bh = p.find(".player-lrc-box").height();
         var lrcBar = createSidebar(p.find(".player-lrc-box"),p.find(".player-lrc"),6,"right");
@@ -391,12 +469,24 @@ $(function () {
             lrcBar.height(bh/data*bh);
         })
     }
+    /**
+     * 绑定自定义事件
+     */
     function lrcListBarListener(bh) {
         var lrcListBar = createSidebar(p.find(".player-list-box"),p.find(".player-list"),6,"left");
         playListbarMonitor.listen("playList",function (data) {
             lrcListBar.height(bh/data*bh)
         })
     }
+
+    /**
+     * 创建滑动条
+     * @param par 父元素
+     * @param c 显示列表元素
+     * @param w 滑动条宽度 px
+     * @param d 滑动条方向 "left"or"right"
+     * @returns {*|jQuery} 滑动条元素
+     */
     function createSidebar(par,c,w,d) {
         var css = {
             "position":"absolute",
@@ -435,7 +525,8 @@ $(function () {
                         topMove = topMax
                     }
                     bar.css("top",topMove+"px");
-                    moveBar(topMove,topMax,(lH-topMax))
+                    moveBar(topMove,topMax,(lH-topMax));
+                    window.getSelection ? window.getSelection().removeAllRanges() : document.selection.empty();
                 });
             })
             .appendTo(par);
@@ -492,6 +583,10 @@ $(function () {
         return bar;
     }
     var lrcTimeId = 0, lrcTemp = undefined, lrcTimeIdTemp = undefined;
+    /**
+     * 当前歌词高亮显示
+     * @param cTime 歌曲当前播放时间
+     */
     function showCurrentLrc(cTime) {
         if (lrcTimeId < lrc.length && cTime > lrc[lrcTimeId].timeId) {
             while (lrcTimeId < lrc.length && cTime > lrc[lrcTimeId].timeId) {
@@ -512,6 +607,11 @@ $(function () {
             lrcTimeIdTemp = lrcTimeId;
         }
     }
+
+    /**
+     * 动态改变歌词上下位置
+     * @param id 当前高亮歌词timeId
+     */
     function changeLrcTop(id) {
         if (id > 6) {
             p.find(".player-lrc").css({
@@ -525,6 +625,7 @@ $(function () {
         }
     }
     var  player = {
+        //播放
         play : function () {
             audio.play();
             p.find(".player-btn-pp").css({
@@ -533,6 +634,7 @@ $(function () {
                 "opacity": ".5"
             })
         },
+        //暂停
         pause : function () {
             audio.pause();
             p.find(".player-btn-pp").css({
@@ -541,6 +643,7 @@ $(function () {
                 "opacity": ".5"
             })
         },
+        //静音
         muted : function (muted) {
           if(muted){
               audio.muted = true;
@@ -550,10 +653,11 @@ $(function () {
               p.find(".player-volume-bg").removeClass("mute")
           }
         },
+        //加载歌曲列表
         loadPlayList : function () {
             var li = "";
             for(var i=0;i<playList.length;i++){
-                li+="<li class='playlist-"+i+"' listid='"+i+"'>"+playList[i].artist+" - "+playList[i].name+"</li>"
+                li+="<li class='playlist-"+i+"' data-listid='"+i+"'>"+playList[i].artist+" - "+playList[i].name+"</li>"
             }
             p.find(".player-list").html(li);
             var  bh = p.find(".player-list-box").height(),
@@ -563,6 +667,7 @@ $(function () {
                 playListbarMonitor.trigger("playList",p.find(".player-list").height())
             }
         },
+        //加载播放器
         loadPlayMedia : function (autoPlay) {
             loadLrc();
             loadSongInf();
@@ -588,24 +693,9 @@ $(function () {
         playModeListener();
         lrcBarListener();
     }
-    function windowSizeListerer() {
-        var pW = p.width(),
-            pH = p.height();
-        changePlayerSize($(window).width(),$(window).height(),pW,pH);
-        $(window).on("resize",function () {
-            changePlayerSize($(window).width(),$(window).height(),pW,pH);
-        })
-    }
-    function changePlayerSize(wW,wH,pW,pH) {
-        var zW = wW/pW,
-            zH = wH/pH;
-        zoom = Math.min(zW,zH);
-        p.css({"zoom":zoom})
-    }
     function init() {
         getPlayList();
         setTheme();
-        windowSizeListerer();
     }
     init();
 });

@@ -1,3 +1,4 @@
+/*pc端*/
 *{
   margin: 0;
   padding: 0;
@@ -5,7 +6,7 @@
 body{
   background: url("../images/bg.jpg") no-repeat center;
   background-size: cover;
-  transition: background 9s;
+  transition: background 1s;
 }
 #player *{
   box-sizing: border-box;
@@ -23,6 +24,7 @@ body{
   margin: 0 auto;
 /*  background-color: rgba(0,0,0,.1);*/
   font: 14px/1.5 "microsoft yahei", Helvetica, Arial, "宋体", sans-serif;
+  /*player显示面板start*/
   .player-content{
     position: relative;
     width: 100%;
@@ -52,7 +54,7 @@ body{
           line-height: 1.8;
           list-style: none;
           padding: 0 0 0 32px;
-          transition: all 1s;
+          //transition: all 1s;
           li{
             padding-left: 20px;
             cursor: pointer;
@@ -141,7 +143,7 @@ body{
           text-align: center;
           list-style: none;
           color: #f5f5f5;
-          transition: all 1s;
+          //transition: all 1s;
           line-height: 2;
           cursor: pointer;
         }
@@ -151,6 +153,8 @@ body{
       }
     }
   }
+  /*player显示面板end*/
+  /*player控制面板start*/
   .player-panel{
     position: absolute;
     bottom: 0;
@@ -178,7 +182,7 @@ body{
           width: 70px;
           opacity: .5;
           cursor: pointer;
-          transition: all .7s;
+          //transition: all .7s;
           &:hover{
             opacity: 1 !important;
           }
@@ -267,7 +271,7 @@ body{
           background-size: 100%;
           opacity: .5;
           cursor: pointer;
-          transition: all .7s;
+          //transition: all .7s;
         }
         .current{
           opacity: 1;
@@ -313,4 +317,5 @@ body{
       }
     }
   }
+  /*player显示面板end*/
 }

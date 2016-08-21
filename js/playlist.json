@@ -3,21 +3,27 @@
     "name":"雨花石",
     "artist" : "李玉刚&石头",
     "album" : "雨花石",
-    "mid":"928493"
+    "mp3" : "media/1.mp3",
+    "aac" : "media/1.aac",
+    "lrc" : "media/1.lrc",
+    "artpic" : "media/1.jpg"
   },
   "2":{
     "name":"情网",
     "artist" : "张学友",
     "album" : "吻别",
-    "mp3" : "http://other.web.ra01.sycdn.kuwo.cn/d29080666d22e0d2faa1e0c84130de38/572b2142/resource/n2/192/50/5/1152512476.mp3",
-    "aac" : "http://other.web.ra03.sycdn.kuwo.cn/bb25c77dfd9dabda81bebb5b61ac90d7/572b1d75/resource/a2/48/40/3/577453667.aac",
-    "mid":"157907"
+    "mp3" : "media/2.mp3",
+    "aac" : "media/2.aac",
+    "lrc" : "media/2.lrc",
+    "artpic" : "media/2.jpg"
   },
   "3":{
     "name":"演员",
     "artist" : "薛之谦",
     "album" : "绅士",
-    "aac" :  "http://other.web.rf03.sycdn.kuwo.cn/bd43c8f41b5ccf4352c8b9599bb69cbb/572b1d78/resource/a3/49/15/3276584835.aac",
-    "mid":"6468891"
+    "mp3" : "media/3.mp3",
+    "aac" : "media/3.aac",
+    "lrc" : "media/3.lrc",
+    "artpic" : "media/3.jpg"
   }
 }

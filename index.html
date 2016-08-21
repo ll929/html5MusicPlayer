@@ -2,13 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-
     <title>html5player</title>
-    <!--<link rel="stylesheet" type="text/css" href="css/main.css">-->
-    <!--<link rel="stylesheet" type="text/css" href="css/mobile.css">-->
 </head>
 <body>
+<!--player start-->
 <div id="player">
+    <!--player显示面板start-->
     <div class="player-content">
         <div class="player-left">
             <div class="player-list-box">
@@ -28,12 +27,13 @@
         </div>
         <div class="player-right">
             <div class="player-lrc-box">
-                <!--<div class="player-lrc-scrollbar"></div>-->
                 <ul class="player-lrc">
                 </ul>
             </div>
         </div>
     </div>
+    <!--player显示面板end-->
+    <!--player控制面板start-->
     <div class="player-panel">
         <div class="player-panel-left">
             <ul class="player-btn">
@@ -75,16 +75,17 @@
             <source class="audio-source-2">
         </audio>
     </div>
+    <!--player控制面板end-->
+    <!--player背景start-->
     <div class="player-box-bg" style="display: none">
         <img id="player-box-bg-img">
         <canvas id="player-box-bg-canvas"></canvas>
     </div>
+    <!--player背景end-->
 </div>
+<!--player end-->
 <script src="js/jquery-1.7.2.min.js"></script>
-<script src="js/jquery.touchSwipe.min.js"></script>
 <script src="js/StackBlur.js"></script>
-<!--<script src="js/mobile.js"></script>-->
-<!--<script src="js/player.js"></script>-->
-<script src="js/main.js"></script>
+<script src="js/init.js"></script>
 </body>
 </html>

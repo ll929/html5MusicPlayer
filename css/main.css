@@ -1,3 +1,4 @@
+/*pc端*/
 * {
   margin: 0;
   padding: 0;
@@ -5,17 +6,13 @@
 body {
   background: url("../images/bg.jpg") no-repeat center;
   background-size: cover;
-  -webkit-transition: background 9s;
-          transition: background 9s;
+  transition: background 1s;
 }
 #player * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   overflow: hidden;
-}
-#player *::-moz-selection {
-  background: none;
 }
 #player *::selection {
   background: none;
@@ -27,6 +24,10 @@ body {
   margin: 0 auto;
   /*  background-color: rgba(0,0,0,.1);*/
   font: 14px/1.5 "microsoft yahei", Helvetica, Arial, "宋体", sans-serif;
+  /*player显示面板start*/
+  /*player显示面板end*/
+  /*player控制面板start*/
+  /*player显示面板end*/
 }
 #player .player-content {
   position: relative;
@@ -62,8 +63,6 @@ body {
   line-height: 1.8;
   list-style: none;
   padding: 0 0 0 32px;
-  -webkit-transition: all 1s;
-          transition: all 1s;
 }
 #player .player-content .player-left .player-list-box .player-list li {
   padding-left: 20px;
@@ -111,27 +110,14 @@ body {
 }
 #player .player-content .player-center .cdtheme {
   border-radius: 100%;
-  -webkit-animation: cd 6s infinite linear;
-          animation: cd 6s infinite linear;
-}
-@-webkit-keyframes cd {
-  0% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
-  }
+  animation: cd 6s infinite linear;
 }
 @keyframes cd {
   0% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
+    transform: rotate(0deg);
   }
   100% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 #player .player-content .player-center .player-art-title {
@@ -165,8 +151,6 @@ body {
   text-align: center;
   list-style: none;
   color: #f5f5f5;
-  -webkit-transition: all 1s;
-          transition: all 1s;
   line-height: 2;
   cursor: pointer;
 }
@@ -178,7 +162,7 @@ body {
   bottom: 0;
   width: 100%;
   height: 70px;
-  background: rgba(0, 0, 0, 0.06)
+  background: rgba(0, 0, 0, 0.06);
   /*  border: 3px solid #f00;*/
 }
 #player .player-panel .player-panel-left {
@@ -186,7 +170,7 @@ body {
   left: 0;
   top: 0;
   height: 100%;
-  width: 200px
+  width: 200px;
   /*  border: 3px solid #ff00ff;*/
 }
 #player .player-panel .player-panel-left .player-btn {
@@ -205,8 +189,6 @@ body {
   width: 70px;
   opacity: .5;
   cursor: pointer;
-  -webkit-transition: all .7s;
-          transition: all .7s;
 }
 #player .player-panel .player-panel-left .player-btn .player-btn-pre:hover,
 #player .player-panel .player-panel-left .player-btn .player-btn-pp:hover,
@@ -263,7 +245,7 @@ body {
   width: 0;
   background: rgba(123, 255, 255, 0.7);
   opacity: .7;
-  border-radius: 5px
+  border-radius: 5px;
   /*border-right: 5px solid #fff;*/
 }
 #player .player-panel .player-panel--right {
@@ -271,7 +253,7 @@ body {
   right: 0;
   top: 0;
   height: 100%;
-  width: 260px
+  width: 260px;
   /*     border: 3px solid #ff00ff;*/
 }
 #player .player-panel .player-panel--right .player-mode {
@@ -299,8 +281,6 @@ body {
   background-size: 100%;
   opacity: .5;
   cursor: pointer;
-  -webkit-transition: all .7s;
-          transition: all .7s;
 }
 #player .player-panel .player-panel--right .player-mode .current {
   opacity: 1;
